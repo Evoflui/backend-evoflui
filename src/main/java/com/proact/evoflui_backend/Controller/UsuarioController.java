@@ -29,7 +29,7 @@ public class UsuarioController {
     }
 
     // 200 - OK
-    // 201 - ELEMENTO SALVO BANCO DE DADOS
+    // 201 - ELEMENTO SALVO NO BANCO DE DADOS
     // 204 - SEM CONTEUDO
     // 409 - ELEMENTO JÀ EXISTE
     // 401 - ELEMENTO NÂO EXISTE
@@ -41,9 +41,9 @@ public class UsuarioController {
         if(usuarioEncontrado.isPresent()) {
             return ResponseEntity.status(409).build();
         }
-        String senhaHash = passwordEncoder.encode(usuario.getSenha());
-        usuario.setSenha(senhaHash);
-        usuarioRepository.save(usuario);
+        String senhaHash = passwordEncoder.encode(usuario.getSenha()); //pega a senha do usuario, e transforma em hash
+        usuario.setSenha(senhaHash); // seta a senha do usuario sendo ela uma hash
+        usuarioRepository.save(usuario); // manda pro BD o usuario
         return ResponseEntity.status(201).build();
     }
 

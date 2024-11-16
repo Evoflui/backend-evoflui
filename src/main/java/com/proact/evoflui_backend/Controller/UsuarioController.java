@@ -21,7 +21,7 @@ public class UsuarioController {
     @Autowired
     private TipoUsuarioRepository tipoUsuarioRepository;
     //Segurança em senhas, por criptografia
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @RequestMapping("/cadastro")
     public List<TipoUsuario> requestCadastro() {
@@ -37,6 +37,7 @@ public class UsuarioController {
 
     @PostMapping("/cadastro")
     public ResponseEntity<Void> cadastrarUsuario(@RequestBody Usuario usuario) {
+        System.out.println(usuario.getTipoUsuario());
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(usuario.getEmail());
         if(usuarioEncontrado.isPresent()) {
             return ResponseEntity.status(409).build();
@@ -52,6 +53,8 @@ public class UsuarioController {
         if (usuario.getEmail() == null || usuario.getSenha() == null) {
             return ResponseEntity.badRequest().build(); // 400
         }
+
+
 
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(usuario.getEmail());
 

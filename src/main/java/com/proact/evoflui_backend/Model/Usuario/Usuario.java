@@ -11,11 +11,8 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long usuarioId;
 
-    @Column(nullable = false, unique = true)
-    private String nome;
-
     @Column(nullable = false)
-    private String sobrenome;
+    private String nome;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -36,10 +33,9 @@ public class Usuario {
 
     public Usuario() {}
 
-    public Usuario(Long usuarioId, String nome, String sobrenome, String email, String senha, TipoUsuario tipoUsuario, Integer progressoTrilha, Status statusUsuario) {
+    public Usuario(Long usuarioId, String nome, String email, String senha, TipoUsuario tipoUsuario, Integer progressoTrilha, Status statusUsuario) {
         this.usuarioId = usuarioId;
         this.nome = nome;
-        this.sobrenome = sobrenome;
         this.email = email;
         this.senha = senha;
         this.tipoUsuario = tipoUsuario;
@@ -57,18 +53,6 @@ public class Usuario {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getSobrenome() {
-        return sobrenome;
-    }
-
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
-    }
-
-    public String getNomeCompleto() {
-        return this.nome + " " + this.sobrenome;
     }
 
     public String getEmail() {

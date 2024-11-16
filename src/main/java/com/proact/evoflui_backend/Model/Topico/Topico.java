@@ -9,13 +9,13 @@ public class Topico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "topico_id")
-    int topicoId;
+    private int topicoId;
 
     @Column(name = "titulo")
-    String titulo;
+    private String titulo;
 
     @Column(name = "quantidade_mensagem")
-    int quantidadeMensagem;
+    private int quantidadeMensagem;
 
 
     public Topico() {

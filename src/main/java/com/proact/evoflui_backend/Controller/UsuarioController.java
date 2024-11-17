@@ -18,15 +18,15 @@ import java.util.Optional;
 public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
-    @Autowired
-    private TipoUsuarioRepository tipoUsuarioRepository;
     //Segurança em senhas, por criptografia
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @RequestMapping("/cadastro")
-    public List<TipoUsuario> requestCadastro() {
-        return tipoUsuarioRepository.findAll();
-    }
+//    @Autowired
+//    private TipoUsuarioRepository tipoUsuarioRepository;
+//    @RequestMapping("/cadastro")
+//    public List<TipoUsuario> requestCadastro() {
+//        return tipoUsuarioRepository.findAll();
+//    }
 
     // 200 - OK
     // 201 - ELEMENTO SALVO NO BANCO DE DADOS
@@ -54,8 +54,6 @@ public class UsuarioController {
             return ResponseEntity.badRequest().build(); // 400
         }
 
-
-
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(usuario.getEmail());
 
         if(usuarioEncontrado.isPresent()) {
@@ -72,9 +70,27 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpSession session) {
+    @RequestMapping("/home")
+    public ResponseEntity<Usuario> home(HttpSession httpSession) {
+        Usuario usuarioLogado = (Usuario) httpSession.getAttribute("usuarioLogado");
+
+        if (usuarioLogado == null) {
+            // Retorna uma resposta 401 (Unauthorized) caso o usuário não esteja logado
+            return ResponseEntity.status(401).build();
+        }
+
+        Usuario usuarioSemDadosSensiveis = new Usuario(usuarioLogado.getUsuarioId());
+        usuarioSemDadosSensiveis.setNome(usuarioLogado.getNome());
+        usuarioSemDadosSensiveis.setEmail(usuarioLogado.getEmail());
+        usuarioSemDadosSensiveis.setTipoUsuario(usuarioLogado.getTipoUsuario());
+        usuarioSemDadosSensiveis.setProgressoTrilha(usuarioLogado.getProgressoTrilha());
+        usuarioSemDadosSensiveis.setStatusUsuario(usuarioLogado.getStatusUsuario());
+
+        return ResponseEntity.ok(usuarioSemDadosSensiveis);
+    }
+
+    @RequestMapping("/logout")
+    public void logout(HttpSession session) {
         session.invalidate();
-        return ResponseEntity.noContent().build(); // 204 No Content
     }
 }

@@ -1,6 +1,6 @@
 package com.proact.evoflui_backend.Repository.Atividade;
 
-import com.proact.evoflui_backend.Model.Atividade.Atividade;
+import com.proact.evoflui_backend.Model.Trilha.Atividade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

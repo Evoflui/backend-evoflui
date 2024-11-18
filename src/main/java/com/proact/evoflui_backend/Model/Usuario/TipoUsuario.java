@@ -1,38 +1,27 @@
 package com.proact.evoflui_backend.Model.Usuario;
 
+import com.proact.evoflui_backend.Enums.StatusTipoUsuario;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tipo_usuario")
 public class TipoUsuario {
     @Id
+    @Column(name = "tipo_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tipo_id;
+    private Long tipoId;
 
-    @Column(nullable = false, unique = true)
-    private String nome_tipo;
+    @Column(nullable = false, unique = true, name = "nome_tipo")
+    @Enumerated(EnumType.STRING)
+    private StatusTipoUsuario nomeTipo;
 
-    public TipoUsuario() {
-    }
+    public TipoUsuario() {}
 
-    public TipoUsuario(Long tipo_id, String nome_tipo) {
-        this.tipo_id = tipo_id;
-        this.nome_tipo = nome_tipo;
-    }
+    public TipoUsuario(StatusTipoUsuario nomeTipo) {this.nomeTipo = nomeTipo;}
 
-    public Long gettipoId() {
-        return tipo_id;
-    }
+    public Long getTipoId() {return tipoId;}
 
-    public void settipoId(Long tipo_id) {
-        this.tipo_id = tipo_id;
-    }
+    public StatusTipoUsuario getNomeTipo() {return nomeTipo;}
 
-    public String getNome_tipo() {
-        return nome_tipo;
-    }
-
-    public void setNome_tipo(String nome_tipo) {
-        this.nome_tipo = nome_tipo;
-    }
+    public void setNomeTipo(StatusTipoUsuario nomeTipo) {this.nomeTipo = nomeTipo;}
 }

@@ -1,7 +1,11 @@
 package com.proact.evoflui_backend.Controller;
 
-import com.proact.evoflui_backend.Model.Usuario.TipoUsuario;
-import com.proact.evoflui_backend.Repository.Usuario.TipoUsuarioRepository;
+import com.proact.evoflui_backend.Model.Novel.Personagem;
+import com.proact.evoflui_backend.Model.Novel.RelacionamentoUsuarioPersonagem;
+import com.proact.evoflui_backend.Model.Trilha.Trilha;
+import com.proact.evoflui_backend.Repository.Cena.PersonagemRepository;
+import com.proact.evoflui_backend.Repository.Cena.RelacionamentoUsuarioPersonagemRepository;
+import com.proact.evoflui_backend.Repository.Trilha.TrilhaRepository;
 import com.proact.evoflui_backend.Model.Usuario.Usuario;
 import com.proact.evoflui_backend.Repository.Usuario.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,15 +23,13 @@ import java.util.Optional;
 public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
-    //Segurança em senhas, por criptografia
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-//    @Autowired
-//    private TipoUsuarioRepository tipoUsuarioRepository;
-//    @RequestMapping("/cadastro")
-//    public List<TipoUsuario> requestCadastro() {
-//        return tipoUsuarioRepository.findAll();
-//    }
+    @Autowired
+    private TrilhaRepository trilhaRepository;
+    @Autowired
+    private RelacionamentoUsuarioPersonagemRepository relacionamentoUsuarioPersonagemRepository;
+    @Autowired
+    private PersonagemRepository personagemRepository;
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // 200 - OK
     // 201 - ELEMENTO SALVO NO BANCO DE DADOS
@@ -35,16 +38,46 @@ public class UsuarioController {
     // 401 - ELEMENTO NÂO EXISTE
     // 403 - SENHA INCORRETA
 
+    @RequestMapping("/cadastro")
+    public ResponseEntity<Void> requestCadastro(HttpSession httpSession) {
+        Usuario usuarioLogado = (Usuario) httpSession.getAttribute("usuarioLogado");
+
+        if (usuarioLogado != null) {
+            return ResponseEntity.status(201).build();
+        }
+        return ResponseEntity.status(200).build();
+    }
+
+    public List<RelacionamentoUsuarioPersonagem> salvarRelacionamentoPersonsagens(Usuario usuario) {
+        List<Personagem> personagens = personagemRepository.findAll();
+        List<RelacionamentoUsuarioPersonagem> listaRelacionamentos = new ArrayList<>();
+
+        for (Personagem personagem : personagens) {
+            RelacionamentoUsuarioPersonagem novoRelacionamento = new RelacionamentoUsuarioPersonagem(
+                    personagem.getPersonagemId(),
+                    usuario
+            );
+            listaRelacionamentos.add(novoRelacionamento);
+        }
+
+        return listaRelacionamentos;
+    }
+
     @PostMapping("/cadastro")
     public ResponseEntity<Void> cadastrarUsuario(@RequestBody Usuario usuario) {
-        System.out.println(usuario.getTipoUsuario());
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(usuario.getEmail());
         if(usuarioEncontrado.isPresent()) {
             return ResponseEntity.status(409).build();
         }
-        String senhaHash = passwordEncoder.encode(usuario.getSenha()); //pega a senha do usuario, e transforma em hash
-        usuario.setSenha(senhaHash); // seta a senha do usuario sendo ela uma hash
-        usuarioRepository.save(usuario); // manda pro BD o usuario
+        String senhaHash = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaHash);
+        usuarioRepository.save(usuario);
+
+        List<RelacionamentoUsuarioPersonagem> relacionamentosUsuario = salvarRelacionamentoPersonsagens(usuario);
+        usuario.setRelacionamentosUsuario(relacionamentosUsuario);
+
+        relacionamentoUsuarioPersonagemRepository.saveAll(relacionamentosUsuario);
+
         return ResponseEntity.status(201).build();
     }
 
@@ -75,16 +108,24 @@ public class UsuarioController {
         Usuario usuarioLogado = (Usuario) httpSession.getAttribute("usuarioLogado");
 
         if (usuarioLogado == null) {
-            // Retorna uma resposta 401 (Unauthorized) caso o usuário não esteja logado
             return ResponseEntity.status(401).build();
         }
 
-        Usuario usuarioSemDadosSensiveis = new Usuario(usuarioLogado.getUsuarioId());
-        usuarioSemDadosSensiveis.setNome(usuarioLogado.getNome());
-        usuarioSemDadosSensiveis.setEmail(usuarioLogado.getEmail());
-        usuarioSemDadosSensiveis.setTipoUsuario(usuarioLogado.getTipoUsuario());
-        usuarioSemDadosSensiveis.setProgressoTrilha(usuarioLogado.getProgressoTrilha());
-        usuarioSemDadosSensiveis.setStatusUsuario(usuarioLogado.getStatusUsuario());
+        Usuario usuarioSemDadosSensiveis = new Usuario(
+                usuarioLogado.getNome(),
+                usuarioLogado.getEmail(),
+                usuarioLogado.getApelido(),
+                null,
+                usuarioLogado.getTipoUsuario(),
+                usuarioLogado.getProgressoTrilha(),
+                usuarioLogado.getRelacionamentosUsuario(),
+                usuarioLogado.getStatusUsuario()
+        );
+
+        Optional<Trilha> trilhaUsuarioEncontrada = trilhaRepository.findById(usuarioLogado.getTipoUsuario());
+        if(trilhaUsuarioEncontrada.isPresent()) {
+            Trilha trilhaUsuario = trilhaUsuarioEncontrada.get();
+        }
 
         return ResponseEntity.ok(usuarioSemDadosSensiveis);
     }

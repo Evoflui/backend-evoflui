@@ -1,6 +1,6 @@
 package com.proact.evoflui_backend.Repository.Bloco;
 
-import com.proact.evoflui_backend.Model.Bloco.Bloco;
+import com.proact.evoflui_backend.Model.Trilha.Bloco;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

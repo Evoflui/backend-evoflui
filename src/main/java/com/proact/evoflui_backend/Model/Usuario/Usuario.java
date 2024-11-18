@@ -1,18 +1,23 @@
 package com.proact.evoflui_backend.Model.Usuario;
 
-import com.proact.evoflui_backend.Enums.Status;
+import com.proact.evoflui_backend.Model.Novel.RelacionamentoUsuarioPersonagem;
+import com.proact.evoflui_backend.Enums.StatusUsuario;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
 public class Usuario {
-
     @Id
+    @Column(name = "usuario_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long usuarioId;
 
     @Column(nullable = false)
     private String nome;
+
+    private String apelido;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -20,28 +25,34 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
-    @ManyToOne
-    @JoinColumn(name = "tipo_id")
-    private TipoUsuario tipoUsuario;
+    @Column(name = "tipo_id")
+    private Long tipoUsuario;
+
+    @Column(name = "is_novo")
+    private boolean isNovo;
 
     @Column(name = "progresso_trilha", columnDefinition = "INT DEFAULT 0")
     private Integer progressoTrilha = 0;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_usuario")
-    private Status statusUsuario;
+    @Column(name = "status_usuario", nullable = false)
+    private StatusUsuario statusUsuario;
+
+    @OneToMany(mappedBy = "forUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RelacionamentoUsuarioPersonagem> relacionamentosUsuario;
 
     public Usuario() {}
 
-    public Usuario(Long usuarioId) { this.usuarioId = usuarioId;}
-
-    public Usuario(String nome, String email, String senha, TipoUsuario tipoUsuario, Integer progressoTrilha, Status statusUsuario) {
+    public Usuario(String nome, String email, String apelido, String senha, Long tipoUsuario, Integer progressoTrilha, List<RelacionamentoUsuarioPersonagem> relacionamentosUsuario, StatusUsuario statusUsuario) {
         this.nome = nome;
+        this.apelido = apelido;
         this.email = email;
+        this.isNovo = Boolean.TRUE;
         this.senha = senha;
         this.tipoUsuario = tipoUsuario;
         this.progressoTrilha = progressoTrilha;
         this.statusUsuario = statusUsuario;
+        this.relacionamentosUsuario = relacionamentosUsuario;
     }
 
     public Long getUsuarioId() {
@@ -55,6 +66,22 @@ public class Usuario {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public boolean isNovo() {return isNovo;}
+
+    public void setNovo(boolean novo) {isNovo = novo;}
+
+    public String getApelido() {
+        return apelido;
+    }
+
+    public void setApelido(String apelido) {
+        this.apelido = apelido;
+    }
+
+    public List<RelacionamentoUsuarioPersonagem> getRelacionamentosUsuario() {return relacionamentosUsuario;}
+
+    public void setRelacionamentosUsuario(List<RelacionamentoUsuarioPersonagem> relacionamentosUsuario) {this.relacionamentosUsuario = relacionamentosUsuario;}
 
     public String getEmail() {
         return email;
@@ -80,19 +107,19 @@ public class Usuario {
         this.progressoTrilha = progressoTrilha;
     }
 
-    public TipoUsuario getTipoUsuario() {
+    public Long getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+    public void setTipoUsuario(Long tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 
-    public Status getStatusUsuario() {
+    public StatusUsuario getStatusUsuario() {
         return statusUsuario;
     }
 
-    public void setStatusUsuario(Status statusUsuario) {
+    public void setStatusUsuario(StatusUsuario statusUsuario) {
         this.statusUsuario = statusUsuario;
     }
 }

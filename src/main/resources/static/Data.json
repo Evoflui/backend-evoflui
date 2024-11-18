@@ -1,0 +1,118 @@
+{
+  "tipo_usuario": [
+    {
+      "tipo_id": 1,
+      "nome_tipo": "MEMBRO"
+    },
+    {
+      "tipo_id": 2,
+      "nome_tipo": "TUTOR"
+    }
+  ],
+  "usuarios": [
+    {
+      "usuarioId": 1,
+      "nome": "João Silva",
+      "apelido": "João",
+      "email": "joao.silva@example.com",
+      "senha": "$2a$10$VZb5iX1Pq5U0QmEdG4IZQeLk9Wm8oEZH4QZ9lWwHzmUl2jWjiLy3y",
+      "tipoUsuario": {
+        "tipoId": 1,
+        "nomeTipo": "MEMBRO"
+      },
+      "progressoTrilha": 50,
+      "statusUsuario": "ATIVO"
+    },
+    {
+      "usuarioId": 2,
+      "nome": "Maria Oliveira",
+      "apelido": "Maria",
+      "email": "maria.oliveira@example.com",
+      "senha": "$2a$10$Kjs7dFz6Jwzv99NoqgQ9iD.nxNiQ84m9gV6kLhf3xyA0aAzZFLzPO",
+      "tipoUsuario": {
+        "tipoId": 2,
+        "nomeTipo": "TUTOR"
+      },
+      "progressoTrilha": 30,
+      "statusUsuario": "INATIVO"
+    }
+  ],
+  "trilhas": [
+    {
+      "trilhaId": 1,
+      "titulo": "Trilha para Membros",
+      "tipoTrilha": "MEMBRO",
+      "statusTrilha": "ATIVA",
+      "blocos": [
+        {
+          "blocoId": 1,
+          "titulo": "Bloco 1",
+          "descricao": "Introdução ao conteúdo para membros."
+        },
+        {
+          "blocoId": 2,
+          "titulo": "Bloco 2",
+          "descricao": "Conteúdo intermediário para membros."
+        }
+      ],
+      "cenas": [
+        {
+          "cenaId": 1,
+          "fala": "Bem-vindo à nossa jornada, Membro!",
+          "fotoPersonagem": "foto_personagem_1.jpg",
+          "nomePersonagem": "Personagem 1",
+          "trilha": {
+            "trilhaId": 1
+          }
+        },
+        {
+          "cenaId": 2,
+          "fala": "Continue sua jornada, Membro, você está indo bem!",
+          "fotoPersonagem": "foto_personagem_2.jpg",
+          "nomePersonagem": "Personagem 2",
+          "trilha": {
+            "trilhaId": 1
+          }
+        }
+      ]
+    },
+    {
+      "trilhaId": 2,
+      "titulo": "Trilha para Tutores",
+      "tipoTrilha": "TUTOR",
+      "statusTrilha": "ATIVA",
+      "blocos": [
+        {
+          "blocoId": 1,
+          "titulo": "Bloco 1",
+          "descricao": "Introdução ao conteúdo para tutores."
+        },
+        {
+          "blocoId": 2,
+          "titulo": "Bloco 2",
+          "descricao": "Conteúdo intermediário para tutores."
+        }
+      ],
+      "cenas": [
+        {
+          "cenaId": 3,
+          "fala": "Bem-vindo à nossa jornada, Tutor!",
+          "fotoPersonagem": "foto_personagem_3.jpg",
+          "nomePersonagem": "Personagem 3",
+          "trilha": {
+            "trilhaId": 2
+          }
+        },
+        {
+          "cenaId": 4,
+          "fala": "Continue sua jornada, Tutor, você está indo bem!",
+          "fotoPersonagem": "foto_personagem_4.jpg",
+          "nomePersonagem": "Personagem 4",
+          "trilha": {
+            "trilhaId": 2
+          }
+        }
+      ]
+    }
+  ]
+}

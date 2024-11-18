@@ -1,6 +1,6 @@
 package com.proact.evoflui_backend.Enums;
 
-public enum Status {
+public enum StatusUsuario {
     ATIVO,
-    CANCELADO
+    INATIVO
 }

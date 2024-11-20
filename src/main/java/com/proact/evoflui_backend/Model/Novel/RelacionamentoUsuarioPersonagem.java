@@ -1,5 +1,6 @@
 package com.proact.evoflui_backend.Model.Novel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.proact.evoflui_backend.Model.Usuario.Usuario;
 import jakarta.persistence.*;
 
@@ -18,6 +19,7 @@ public class RelacionamentoUsuarioPersonagem {
     private Long forPersonagem;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario forUsuario;
 

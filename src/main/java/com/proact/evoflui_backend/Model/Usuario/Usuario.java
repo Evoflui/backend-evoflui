@@ -1,5 +1,7 @@
 package com.proact.evoflui_backend.Model.Usuario;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.proact.evoflui_backend.Model.Novel.RelacionamentoUsuarioPersonagem;
 import com.proact.evoflui_backend.Enums.StatusUsuario;
 import jakarta.persistence.*;
@@ -38,7 +40,8 @@ public class Usuario {
     @Column(name = "status_usuario", nullable = false)
     private StatusUsuario statusUsuario;
 
-    @OneToMany(mappedBy = "forUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "forUsuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<RelacionamentoUsuarioPersonagem> relacionamentosUsuario;
 
     public Usuario() {}

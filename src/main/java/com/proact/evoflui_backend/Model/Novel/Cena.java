@@ -1,5 +1,7 @@
 package com.proact.evoflui_backend.Model.Novel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.proact.evoflui_backend.Model.Trilha.Atividade;
 import com.proact.evoflui_backend.Model.Trilha.Bloco;
 import com.proact.evoflui_backend.Model.Trilha.Trilha;
@@ -14,7 +16,7 @@ public class Cena {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cena_id")
-    private int cenaId;
+    private Long cenaId;
 
     @Column(name="frase_cena", nullable = false)
     private String fraseCena;
@@ -22,18 +24,22 @@ public class Cena {
     @Column(name = "personagem_id")
     private Long personagemCena;
 
-    @OneToMany(mappedBy = "forCena", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "forCena", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Escolha> escolhasCena;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "trilha_id", referencedColumnName = "trilha_id")
     private Trilha forTrilha;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "bloco_id", referencedColumnName = "bloco_id")
     private Bloco forBloco;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "atividade_id", referencedColumnName = "atividade_id")
     private Atividade forAtividade;
 
@@ -48,7 +54,7 @@ public class Cena {
         this.forAtividade = forAtividade;
     }
 
-    public int getCenaId() {return cenaId;}
+    public Long getCenaId() {return cenaId;}
 
     public String getFraseCena() {return fraseCena;}
 

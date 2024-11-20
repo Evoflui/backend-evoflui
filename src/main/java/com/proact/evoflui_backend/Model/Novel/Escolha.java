@@ -1,5 +1,6 @@
 package com.proact.evoflui_backend.Model.Novel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.proact.evoflui_backend.Model.Trilha.Atividade;
 import jakarta.persistence.*;
 
@@ -18,19 +19,21 @@ public class Escolha {
     private String fotoOpcao;
 
     @Column(name="valor_relacionamento")
-    private int valorRelacionamento;
+    private double valorRelacionamento;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "cena_id",  referencedColumnName = "cena_id")
     private Cena forCena;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "atividade_id",  referencedColumnName = "atividade_id")
     private Atividade forAtividade;
 
     public Escolha() {}
 
-    public Escolha(String nomeOpcao, String fotoOpcao, int valorRelacionamento, Cena forCena, Atividade forAtividade) {
+    public Escolha(String nomeOpcao, String fotoOpcao, double valorRelacionamento, Cena forCena, Atividade forAtividade) {
         this.nomeOpcao = nomeOpcao;
         this.fotoOpcao = fotoOpcao;
         this.valorRelacionamento = valorRelacionamento;
@@ -44,9 +47,9 @@ public class Escolha {
 
     public void setNomeOpcao(String nomeOpcao) {this.nomeOpcao = nomeOpcao;}
 
-    public int getValorRelacionamento() {return valorRelacionamento;}
+    public double getValorRelacionamento() {return valorRelacionamento;}
 
-    public void setValorRelacionamento(int valorRelacionamento) {this.valorRelacionamento = valorRelacionamento;}
+    public void setValorRelacionamento(double valorRelacionamento) {this.valorRelacionamento = valorRelacionamento;}
 
     public String getFotoOpcao() {return fotoOpcao;}
 

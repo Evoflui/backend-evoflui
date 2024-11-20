@@ -1,5 +1,7 @@
 package com.proact.evoflui_backend.Model.Trilha;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.proact.evoflui_backend.Model.Novel.Cena;
 import jakarta.persistence.*;
 
@@ -12,7 +14,7 @@ public class Bloco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bloco_id")
-    private int blocoId;
+    private Long blocoId;
 
     @Column(name="titulo_bloco", nullable = false)
     private String tituloBloco;
@@ -21,13 +23,16 @@ public class Bloco {
     private Boolean isBloqueado;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "trilha_id", referencedColumnName = "trilha_id", insertable = false, updatable = false)
     private Trilha forTrilha;  // Propriedade que faz o relacionamento bidirecional
 
-    @OneToMany(mappedBy = "forBloco", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "forBloco", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Atividade> atividadesBloco;
 
-    @OneToMany(mappedBy = "forBloco", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "forBloco", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Cena> cenasBloco;
 
     public Bloco() {}
@@ -44,7 +49,7 @@ public class Bloco {
         this.cenasBloco = cenasBloco;
     }
 
-    public int getBlocoId() {return blocoId;}
+    public Long getBlocoId() {return blocoId;}
 
     public String getTituloBloco() {return tituloBloco;}
 

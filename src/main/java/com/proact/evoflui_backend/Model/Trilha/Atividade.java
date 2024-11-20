@@ -1,5 +1,7 @@
 package com.proact.evoflui_backend.Model.Trilha;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.proact.evoflui_backend.Enums.StatusAtividade;
 import com.proact.evoflui_backend.Model.Novel.Cena;
 import com.proact.evoflui_backend.Model.Novel.Escolha;
@@ -14,7 +16,7 @@ public class Atividade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "atividade_id")
-    private int atividadeId;
+    private Long atividadeId;
 
     @Column(name="titulo_atividade")
     private String tituloAtividade;
@@ -30,13 +32,16 @@ public class Atividade {
     private StatusAtividade statusAtividade;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "bloco_id", nullable = false)
     private Bloco forBloco;
 
-    @OneToMany(mappedBy = "forAtividade", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "forAtividade", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Escolha> opcoesAtividade;
 
-    @OneToMany(mappedBy = "forAtividade", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "forAtividade", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Cena> cenasAtividade;
 
     public Atividade() {}
@@ -51,7 +56,7 @@ public class Atividade {
         this.cenasAtividade = cenasAtividade;
     }
 
-    public int getAtividadeId() {return atividadeId;}
+    public Long getAtividadeId() {return atividadeId;}
 
     public String getTituloAtividade() {return tituloAtividade;}
 

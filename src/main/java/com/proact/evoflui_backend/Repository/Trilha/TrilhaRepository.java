@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TrilhaRepository extends JpaRepository<Trilha, Long> {
+
+    public Trilha findByTipoTrilha(Long tipoTrilha);
 }

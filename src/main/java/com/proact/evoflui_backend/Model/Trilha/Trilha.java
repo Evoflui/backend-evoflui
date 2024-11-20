@@ -1,10 +1,12 @@
 package com.proact.evoflui_backend.Model.Trilha;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.proact.evoflui_backend.Enums.StatusTrilha;
 import com.proact.evoflui_backend.Enums.StatusTipoUsuario;
 import com.proact.evoflui_backend.Model.Novel.Cena;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,7 +15,7 @@ public class Trilha {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "trilha_id")
-    private int trilhaId;
+    private Long trilhaId;
 
     @Column(name="titulo_trilha", nullable = false)
     private String tituloTrilha;
@@ -25,10 +27,12 @@ public class Trilha {
     @Enumerated(EnumType.STRING)
     private StatusTrilha statusTrilha;
 
-    @OneToMany(mappedBy = "forTrilha", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "forTrilha", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Bloco> blocosTrilha;
 
-    @OneToMany(mappedBy = "forTrilha", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "forTrilha", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Cena> cenasTrilha;
 
     public Trilha() {}
@@ -41,7 +45,7 @@ public class Trilha {
         this.cenasTrilha = cenasTrilha;
     }
 
-    public int getTrilhaId() {return trilhaId;}
+    public Long getTrilhaId() {return trilhaId;}
 
     public String getTituloTrilha() {return tituloTrilha;}
 

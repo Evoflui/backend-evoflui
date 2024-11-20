@@ -13,6 +13,7 @@ public class UsuarioDTO {
     private String nome;
     private String apelido;
     private String email;
+    private String senha;
     private Long tipoUsuario;
     private boolean isNovo;
     private Integer progressoTrilha;
@@ -24,6 +25,7 @@ public class UsuarioDTO {
         this.nome = usuario.getNome();
         this.apelido = usuario.getApelido();
         this.email = usuario.getEmail();
+        this.senha = usuario.getSenha();
         this.tipoUsuario = usuario.getTipoUsuario();
         this.isNovo = usuario.isNovo();
         this.progressoTrilha = usuario.getProgressoTrilha();
@@ -46,6 +48,14 @@ public class UsuarioDTO {
 
     public void setUsuarioId(Long usuarioId) {
         this.usuarioId = usuarioId;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getNome() {

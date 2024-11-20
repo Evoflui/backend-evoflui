@@ -75,6 +75,7 @@ public class UsuarioController {
 
     @PostMapping("/cadastro")
     public ResponseEntity<Void> cadastrarUsuario(@RequestBody Usuario usuario) {
+        System.out.println(usuario.getNome());
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(usuario.getEmail());
         if(usuarioEncontrado.isPresent()) {
             return ResponseEntity.status(409).build();
@@ -93,6 +94,7 @@ public class UsuarioController {
 
     @PostMapping("/home")
     public ResponseEntity<Void> loginUsuario(@RequestBody Usuario usuario, HttpSession httpSession) {
+        System.out.println(usuario.getNome());
         if (usuario.getEmail() == null || usuario.getSenha() == null) {
             return ResponseEntity.badRequest().build(); // 400
         }

@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = "https://evoflui-92824.web.app/", allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/trilha")  // Definindo /trilha como prefixo para todos os métodos
 public class TrilhaController {
 

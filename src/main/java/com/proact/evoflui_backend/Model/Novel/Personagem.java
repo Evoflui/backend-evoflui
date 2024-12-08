@@ -25,13 +25,17 @@ public class Personagem {
     @JsonManagedReference
     private List<RelacionamentoUsuarioPersonagem> forRelacionamentoPersonagem;
 
+    @Column(name = "cor_personagem")
+    private String corPersonagem;
+
     public Personagem() {
     }
 
-    public Personagem(String fotoPersonagem, String nomePersonagem, List<RelacionamentoUsuarioPersonagem> forRelacionamentoPersonagem) {
+    public Personagem(String fotoPersonagem, String nomePersonagem, List<RelacionamentoUsuarioPersonagem> forRelacionamentoPersonagem, String corPersonagem) {
         this.fotoPersonagem = fotoPersonagem;
         this.nomePersonagem = nomePersonagem;
         this.forRelacionamentoPersonagem = forRelacionamentoPersonagem;
+        this.corPersonagem = corPersonagem;
     }
 
     public Long getPersonagemId() {return personagemId;}
@@ -50,5 +54,13 @@ public class Personagem {
 
     public void setForRelacionamentoPersonagem(List<RelacionamentoUsuarioPersonagem> forRelacionamentoPersonagem) {
         this.forRelacionamentoPersonagem = forRelacionamentoPersonagem;
+    }
+
+    public String getCorPersonagem() {
+        return corPersonagem;
+    }
+
+    public void setCorPersonagem(String corPersonagem) {
+        this.corPersonagem = corPersonagem;
     }
 }

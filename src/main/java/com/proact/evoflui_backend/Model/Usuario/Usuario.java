@@ -46,11 +46,11 @@ public class Usuario {
 
     public Usuario() {}
 
-    public Usuario(String nome, String email, String apelido, String senha, Long tipoUsuario, Integer progressoTrilha, List<RelacionamentoUsuarioPersonagem> relacionamentosUsuario, StatusUsuario statusUsuario) {
+    public Usuario(String nome, String email, String apelido,  String senha, Long tipoUsuario, Integer progressoTrilha, List<RelacionamentoUsuarioPersonagem> relacionamentosUsuario, StatusUsuario statusUsuario) {
         this.nome = nome;
         this.apelido = apelido;
         this.email = email;
-        this.isNovo = Boolean.TRUE;
+        this.isNovo = true;
         this.senha = senha;
         this.tipoUsuario = tipoUsuario;
         this.progressoTrilha = progressoTrilha;

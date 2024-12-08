@@ -40,7 +40,7 @@ public class Bloco {
     public Bloco(String tituloBloco, Boolean isBloqueado, Trilha forTrilha, List<Atividade> atividadesBloco, List<Cena> cenasBloco) {
         this.tituloBloco = tituloBloco;
         if(isBloqueado == null) {
-            this.isBloqueado = Boolean.FALSE;
+            this.isBloqueado = false;
         } else {
             this.isBloqueado = isBloqueado;
         }

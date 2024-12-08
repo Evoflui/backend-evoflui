@@ -74,7 +74,7 @@ public class BlocoDTO {
         this.atividadesBloco = atividadesBloco;
     }
 
-    public List<CenaDTO> getCenasBlocoIds() {
+    public List<CenaDTO> getCenasBloco() {
         return cenasBloco;
     }
 

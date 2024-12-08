@@ -4,34 +4,36 @@ import com.proact.evoflui_backend.DTO.Trilha.TrilhaDTO;
 import com.proact.evoflui_backend.DTO.Usuario.UsuarioDTO;
 import com.proact.evoflui_backend.DTO.VisualNovel.CenaDTO;
 import com.proact.evoflui_backend.DTO.VisualNovel.PersonagemDTO;
+import com.proact.evoflui_backend.Model.Novel.Escolha;
 import com.proact.evoflui_backend.Model.Novel.Personagem;
 import com.proact.evoflui_backend.Model.Trilha.Trilha;
 import com.proact.evoflui_backend.Model.Usuario.Usuario;
 import com.proact.evoflui_backend.Repository.Cena.PersonagemRepository;
 import com.proact.evoflui_backend.Repository.Trilha.TrilhaRepository;
+import com.proact.evoflui_backend.Repository.Usuario.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
+@RequestMapping("/trilha")  // Definindo /trilha como prefixo para todos os métodos
 public class TrilhaController {
 
     @Autowired
     private TrilhaRepository trilhaRepository;
     @Autowired
     private PersonagemRepository personagemRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    // METODOS
+    // Métodos auxiliares
 
     private TrilhaDTO convertToDTO(Trilha trilha) {
         return new TrilhaDTO(trilha);
@@ -40,7 +42,7 @@ public class TrilhaController {
     private List<Long> listToLong(List<CenaDTO> personagens) {
         List<Long> ids = new ArrayList<>();
         for (CenaDTO personagem : personagens) {
-            ids.add(personagem.getCenaId());
+            ids.add(personagem.getPersonagemCena());
         }
         return ids;
     }
@@ -56,10 +58,9 @@ public class TrilhaController {
         return personagemDTOs;
     }
 
-    // ROTAS
+    // Métodos de mapeamento para rotas específicas
 
-    @Transactional
-    @RequestMapping("/trilha")
+    @GetMapping
     public ResponseEntity<Object> trilha(HttpSession httpSession) {
         Usuario usuarioLogado = (Usuario) httpSession.getAttribute("usuarioLogado");
 
@@ -70,7 +71,7 @@ public class TrilhaController {
         Usuario usuarioRequest = usuarioLogado;
         usuarioRequest.setSenha(null);
 
-        Trilha trilhaUsuario = trilhaRepository.findByTipoTrilha(usuarioLogado.getTipoUsuario());
+        Trilha trilhaUsuario = trilhaRepository.findById(Long.valueOf(1)).orElse(null);
 
         if (trilhaUsuario == null) {
             return ResponseEntity.status(404).build();  // Caso não exista trilha para o tipo de usuário
@@ -87,5 +88,28 @@ public class TrilhaController {
                 "trilha", trilhaDTO,
                 "personagens", personagensTrilha
         ));
+    }
+
+    @GetMapping("/beginning")
+    public ResponseEntity<Void> isNovoFalse(HttpSession httpSession) {
+        Usuario usuarioLogado = (Usuario) httpSession.getAttribute("usuarioLogado");
+
+        if (usuarioLogado == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        Optional<Usuario> usuarioBanco = usuarioRepository.findByEmail(usuarioLogado.getEmail());
+
+        if(usuarioBanco.isPresent()) {
+            Usuario usuario = usuarioBanco.get();
+            usuario.setNovo(false);
+            usuarioRepository.save(usuario);
+
+            httpSession.setAttribute("usuarioLogado", usuario);
+
+            return ResponseEntity.status(200).build();
+        }
+
+        return ResponseEntity.status(401).build();
     }
 }

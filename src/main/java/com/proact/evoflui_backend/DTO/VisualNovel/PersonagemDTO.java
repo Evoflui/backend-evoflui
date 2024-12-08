@@ -6,6 +6,7 @@ public class PersonagemDTO {
     private Long personagemId;
     private String fotoPersonagem;
     private String nomePersonagem;
+    private String corPersonagem;
 
     public PersonagemDTO() {}
 
@@ -13,6 +14,7 @@ public class PersonagemDTO {
         this.personagemId = personagem.getPersonagemId();
         this.fotoPersonagem = personagem.getFotoPersonagem();
         this.nomePersonagem = personagem.getNomePersonagem();
+        this.corPersonagem = personagem.getCorPersonagem();
     }
 
     public Long getPersonagemId() {
@@ -37,5 +39,13 @@ public class PersonagemDTO {
 
     public void setNomePersonagem(String nomePersonagem) {
         this.nomePersonagem = nomePersonagem;
+    }
+
+    public String getCorPersonagem() {
+        return corPersonagem;
+    }
+
+    public void setCorPersonagem(String corPersonagem) {
+        this.corPersonagem = corPersonagem;
     }
 }
